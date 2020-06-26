@@ -1,13 +1,15 @@
 <!--
  * @Author: Dongzy
  * @since: 2020-06-26 22:13:35
- * @lastTime: 2020-06-26 22:44:37
+ * @lastTime: 2020-06-27 00:21:17
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\pages\illusts\_id.vue
  * @message: 
 -->
 <template>
-  <div>{{ illustDetail }}</div>
+  <div>
+    <div v-if="illustDetail">{{ illustDetail }}</div>
+  </div>
 </template>
 
 <script>
@@ -26,9 +28,9 @@ export default {
   },
   methods: {
     reqAdminIllust() {
-      this.$api.detail.reqIllustDetail(this.$route.params.id).then((res) => {
+      this.$api.detail.reqAdminIllust(this.$route.params.id).then((res) => {
         const data = res.data.data
-        this.illustDetail = this.handleData(data)
+        this.illustDetail = data
       })
     },
   },

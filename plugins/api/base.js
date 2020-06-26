@@ -1,14 +1,12 @@
 /*
  * @Author: gooing
  * @since: 2020-02-02 14:59:46
- * @lastTime: 2020-06-26 22:58:26
+ * @lastTime: 2020-06-27 00:16:44
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\plugins\api\base.js
  * @message:
  */
 import axios from 'axios'
-import cookie from 'js-cookie'
-
 // 创建axios实例
 const instance = axios.create({
   baseURL: 'https://api.pixivic.com',
@@ -21,13 +19,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    if (cookie.get('jwt')) {
-      config.headers.authorization = cookie.get('jwt')
-    }
+    config.headers.Token = '55673d83-a269-45b4-954f-59c731ddb8f0'
     return config
   },
   (error) => {
-    console.log(error)
     Promise.reject(error)
   }
 )
@@ -35,23 +30,9 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // console.log('response', response);
-    if (response.headers.authorization !== undefined) {
-      cookie.set('jwt', response.headers.authorization, {
-        expires: 365,
-      })
-    }
-    if (response.status === 401) {
-      // 登录过期
-      cookie.remove('jwt')
-      localStorage.removeItem('user')
-      setTimeout(() => {
-        window.location.href = '/'
-      }, 1000)
-    }
     return response
   },
   (error) => {
-    console.log('err' + error)
     return Promise.reject(error)
   }
 )

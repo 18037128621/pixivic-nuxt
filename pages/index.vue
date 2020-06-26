@@ -1,7 +1,7 @@
 <!--
  * @Author: Dongzy
  * @since: 2020-06-24 19:43:46
- * @lastTime: 2020-06-26 22:31:16
+ * @lastTime: 2020-06-27 00:17:48
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\pages\index.vue
  * @message: 
@@ -27,7 +27,7 @@ export default {
     return {
       page: 1,
       mode: 'day',
-      date: dayjs(new Date()).add(-1, 'days').format('YYYY-MM-DD'),
+      date: dayjs(new Date()).add(-2, 'days').format('YYYY-MM-DD'),
       pictureList: [],
     }
   },

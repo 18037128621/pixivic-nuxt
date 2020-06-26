@@ -1,7 +1,7 @@
 <!--
  * @Author: gooing
  * @since: 2020-01-24 22:48:37
- * @lastTime: 2020-06-26 22:03:23
+ * @lastTime: 2020-06-26 23:25:47
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\components\Home\HeaderBar.vue
  * @message:
@@ -10,7 +10,7 @@
   <div class="header-bar">
     <div class="header-container">
       <a href="/">
-        <img alt src="@/assets/images/icon.svg" />
+        Pixivic
       </a>
       <nav class="main-nav">
         <el-autocomplete
