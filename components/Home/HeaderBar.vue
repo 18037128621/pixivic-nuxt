@@ -1,0 +1,376 @@
+<!--
+ * @Author: gooing
+ * @since: 2020-01-24 22:48:37
+ * @lastTime: 2020-06-26 22:03:23
+ * @LastAuthor: Dongzy
+ * @FilePath: \pixivic-nuxt\components\Home\HeaderBar.vue
+ * @message:
+ -->
+<template>
+  <div class="header-bar">
+    <div class="header-container">
+      <a href="/">
+        <img alt src="@/assets/images/icon.svg" />
+      </a>
+      <nav class="main-nav">
+        <el-autocomplete
+          v-model="params.keyword"
+          :debounce="300"
+          :fetch-suggestions="querySearch"
+          :maxlength="30"
+          class="input-with-select"
+          placeholder="搜索作品"
+          @keyup.enter.native="handleSearch"
+          @select="handleSelect"
+        >
+          <el-select
+            slot="prepend"
+            v-model="params.illustType"
+            @change="handleSelect"
+          >
+            <el-option
+              v-for="item of typeList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
+        </el-autocomplete>
+        <el-popover
+          placement="bottom"
+          style="margin-left: 10px;"
+          trigger="hover"
+        >
+          <i slot="reference" class="el-icon-s-flag" style="color: #409eff;" />
+          <ImgTags
+            v-if="hotTags.length"
+            :tagslist="hotTags"
+            @on-click="handleClickTag"
+          />
+        </el-popover>
+
+        <!-- <el-badge :value="3">
+          <el-button size="small">消息</el-button>
+        </el-badge>-->
+        <div style="margin-left: 20px;" @click="userOpen">
+          <el-dropdown
+            v-if="user.id"
+            :disabled="!user.id"
+            trigger="click"
+            @command="clickMenu"
+          >
+            <el-avatar
+              :src="
+                user.id
+                  ? `https://pic.cheerfun.dev/${
+                      user.id
+                    }.png?t=${new Date().getTime()}`
+                  : ''
+              "
+              fit="cover"
+              shape="square"
+            />
+            <el-dropdown-menu slot="dropdown">
+              <template>
+                <el-dropdown-item
+                  v-for="item of MenuList"
+                  :key="item.handler"
+                  :command="item.handler"
+                  :divided="item.divided"
+                  >{{ item.name }}</el-dropdown-item
+                >
+              </template>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-avatar
+            v-else
+            fit="cover"
+            icon="el-icon-user-solid"
+            shape="square"
+          />
+        </div>
+      </nav>
+    </div>
+  </div>
+</template>
+
+<script>
+import cookieTool from 'js-cookie'
+import { mapGetters } from 'vuex'
+import ImgTags from './ImgTags'
+export default {
+  name: 'HeaderBar',
+  components: {
+    ImgTags,
+  },
+  data() {
+    return {
+      // 用户中心数据
+      MenuList: [
+        {
+          name: '关注',
+          handler: 'followed',
+        },
+        {
+          name: '收藏',
+          handler: 'bookmarked',
+        },
+        // {
+        //   name: '画集',
+        //   handler: 'mycollect'
+        // },
+        {
+          name: '聚光灯',
+          handler: 'spotLight',
+        },
+        {
+          name: '设置',
+          handler: 'setting',
+        },
+        {
+          name: '退出登录',
+          handler: 'logout',
+          divided: true,
+        },
+      ],
+      // 设置控制显示
+      settingVisible: false,
+      // 搜索时延
+      timeout: null,
+      params: {
+        keyword: '',
+        illustType: 'illust',
+      },
+      keywords: [],
+      squareUrl:
+        'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+      typeList: [
+        {
+          name: '插图',
+          value: 'illust',
+        },
+        {
+          name: '漫画',
+          value: 'manga',
+        },
+        {
+          name: '作者',
+          value: 'artist',
+        },
+      ],
+      // 热门搜索模块
+      hotTags: [],
+    }
+  },
+  computed: {
+    // 辅助函数取出x内用户信息
+    ...mapGetters(['user']),
+  },
+  watch: {},
+  mounted() {
+    this.params.illustType = this.$route.query.illustType || 'illust'
+    this.params.keyword = this.$route.query.tag
+    this.getHotTag()
+  },
+  methods: {
+    // 点击 用户模块
+    clickMenu(type) {
+      switch (type) {
+        case 'followed':
+          this.toFollowed()
+          break
+        case 'bookmarked':
+          this.toBookmarked()
+          break
+        case 'setting':
+          this.setModal()
+          break
+        case 'mycollect':
+          this.toMycollect()
+          break
+        case 'logout':
+          this.logout()
+          break
+        case 'spotLight':
+          this.toSpotLight()
+          break
+        default:
+          break
+      }
+    },
+    // 获取标签数据
+    getHotTag() {
+      this.$api.search.getHotTag().then((res) => {
+        this.hotTags = res.data.data.splice(0, 9)
+      })
+    },
+    // 跳转关注页
+    toFollowed() {
+      this.$router.push({
+        path: '/users/followed',
+        query: {
+          userId: this.user.id,
+        },
+      })
+    },
+    toMycollect() {
+      this.$router.push({
+        path: '/collect/mycollection',
+        query: {
+          userId: this.user.id,
+        },
+      })
+    },
+    // 跳转书签页
+    toBookmarked() {
+      this.$router.push({
+        path: '/users/bookmarked',
+      })
+    },
+    toSpotLight() {
+      this.$router.push({
+        path: '/spot-light/index',
+      })
+    },
+    // 设置弹窗
+    setModal() {
+      this.settingVisible = !this.settingVisible
+    },
+    // 退出登录
+    logout() {
+      this.$confirm('确认退出？')
+        .then((_) => {
+          this.$message.info('退出登录')
+          cookieTool.remove('jwt')
+          this.$store.dispatch('clearCurrentState')
+          // window.location.href = '/'
+        })
+        .catch((_) => {})
+    },
+    // 获取关键词
+    getKeywords() {
+      this.$api.search
+        .getKeyword(this.params.keyword)
+        .then(({ data: { data } }) => {
+          if (data && data.keywordList) {
+            this.keywords = data.keywordList || []
+          }
+        })
+    },
+    // 搜索相关信息
+    querySearch(queryString, cb) {
+      const result = this.keywords.map((e) => {
+        return { value: e }
+      })
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        cb(result)
+      }, 1000)
+    },
+    // 选择
+    handleSelect(e) {
+      this.handleSearch()
+    },
+    // 搜索跳转
+    handleSearch() {
+      const keyword = this.params.keyword
+      if (!keyword.trim()) {
+        return
+      }
+      this.$router.push({
+        path: `/keywords`,
+        query: {
+          tag: keyword,
+          illustType: this.params.illustType,
+        },
+      })
+    },
+    // 点击tag
+    handleClickTag(d) {
+      this.$router.push({
+        path: `/keywords`,
+        query: {
+          tag: d.name,
+          illustType: this.params.illustType,
+        },
+      })
+    },
+    // 打卡用户系统
+    userOpen() {
+      if (!cookieTool.get('jwt')) {
+        this.$store.dispatch('setLoginBoolean')
+      }
+    },
+  },
+}
+</script>
+
+<style scoped lang="less">
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  height: 5rem;
+  background: #fff;
+  color: #909090;
+  border-bottom: 1px solid #f1f1f1;
+
+  .header-container {
+    max-width: 960px;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .main-nav {
+    height: 100%;
+    display: flex;
+    flex: 1 0 auto;
+  }
+  @media (max-width: 960px) {
+    .header-bar {
+      .header-container {
+        width: 96%;
+      }
+    }
+  }
+
+  /deep/.el-select .el-input {
+    width: 80px;
+  }
+
+  /deep/.input-with-select {
+    width: 25vw;
+    background-color: #fff;
+  }
+
+  .input-with-select:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .header-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .user-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+
+    .tool {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 2px;
+      border: 1px solid #dcdfe6;
+      text-align: center;
+    }
+  }
+}
+</style>
