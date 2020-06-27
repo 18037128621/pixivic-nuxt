@@ -1,7 +1,7 @@
 <!--
  * @Author: Dongzy
  * @since: 2020-06-24 19:43:46
- * @lastTime: 2020-06-26 22:22:11
+ * @lastTime: 2020-06-27 14:55:31
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\layouts\default.vue
  * @message: 
@@ -39,7 +39,6 @@ html {
   position: relative;
   margin: 0 auto;
   width: 100%;
-  max-width: 960px;
   top: 5rem;
   &::after {
     display: table;
