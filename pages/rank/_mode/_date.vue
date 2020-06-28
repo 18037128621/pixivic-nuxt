@@ -1,9 +1,9 @@
 <!--
  * @Author: Dongzy
  * @since: 2020-06-24 19:43:46
- * @lastTime: 2020-06-29 00:16:02
+ * @lastTime: 2020-06-29 00:38:41
  * @LastAuthor: Dongzy
- * @FilePath: \pixivic-nuxt\pages\index.vue
+ * @FilePath: \pixivic-nuxt\pages\rank\_mode\_date.vue
  * @message: 
 -->
 <template>
@@ -29,15 +29,14 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import { replaceSmallImg } from '@/util'
 export default {
   async asyncData({ app, params }) {
     const param = {
       page: 1,
       pageSize: 200,
-      date: dayjs(new Date()).add(-2, 'days').format('YYYY-MM-DD'),
-      mode: 'day',
+      date: params.date,
+      mode: params.mode,
     }
     let res = []
     for (let i = 1; i < 20; i++) {
@@ -54,14 +53,11 @@ export default {
     })
     return {
       pictureList: res,
+      params,
     }
   },
   data() {
-    return {
-      page: 1,
-      mode: 'day',
-      date: dayjs(new Date()).add(-2, 'days').format('YYYY-MM-DD'),
-    }
+    return {}
   },
   mounted() {
     // this.getList()

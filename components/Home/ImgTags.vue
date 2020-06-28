@@ -1,7 +1,7 @@
 <!--
  * @Author: gooing
  * @since: 2020-05-01 19:08:50
- * @lastTime: 2020-06-26 14:19:55
+ * @lastTime: 2020-06-29 00:20:28
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\components\Home\ImgTags.vue
  * @message:
@@ -17,7 +17,7 @@
           @click="clickTag(item)"
         >
           <el-image
-            :src="item.illustration.imageUrls[0].medium | replaceSmall"
+            :src="item.illustration.imageUrls[0].medium"
             fit="cover"
             style="height: 180px; width: 180px;"
           />
