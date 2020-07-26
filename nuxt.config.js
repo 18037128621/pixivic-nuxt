@@ -32,6 +32,33 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: process.env.npm_package_description || '222',
+      },
+      { property: 'og:type', content: 'website' },
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: 'pixivic',
+      },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: 'https://pixivic.com/',
+      },
+
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: '提供Pixiv插画排行榜的浏览与下载以及热门排序的高级会员搜索',
+      },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: '插画交流网站 [pixivic]',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },

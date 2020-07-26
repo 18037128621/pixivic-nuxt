@@ -58,9 +58,7 @@
           >
             <img :title="item.title" :alt="item.caption" :src="item.src" />
             <span>{{ item.artistPreView.name }}</span>
-            <nuxt-link :to="{ path: `illusts/${item.id}` }"
-              >{{ item.title }}
-            </nuxt-link>
+            <a :href="`/illusts/${item.id}`">{{ item.title }}</a>
             <div class="caption">{{ item.caption }}</div>
             <ul class="tags">
               <li v-for="e in item.tags" :key="e.id + 2">{{ e.name }}</li>
@@ -75,6 +73,7 @@
 <script>
 import { replaceSmallImg } from '@/util'
 export default {
+  watchQuery: ['id'],
   validate({ params }) {
     // 必须是number类型
     return /^\d+$/.test(params.id)
@@ -113,15 +112,32 @@ export default {
     }
   },
   mounted() {},
-  methods: {},
+  methods: {
+    // 一个没有感情的小编
+    liteEditorAI(keyword) {
+      const strList = ['', '是什么', '的用法', '怎么读', '-pixiv', '-pixivic']
+      return strList.reduce((res, curr) => (res += keyword + curr + ' '), '')
+    },
+    computeKeywords() {
+      return this.illustDetail.tags.reduce(
+        (res, cur) => (res += cur.name + ' '),
+        ''
+      )
+    },
+  },
   head() {
     return {
-      title: 'pixivic',
+      title: this.illustDetail.title,
       meta: [
         {
-          hid: 'og:site_name',
-          property: 'og:site_name',
-          content: 'pixivic',
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.computeKeywords(),
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: `${this.illustDetail.caption} - pixivic`,
         },
         {
           hid: 'og:url',
@@ -146,11 +162,6 @@ export default {
         {
           hid: 'og:description',
           property: 'og:description',
-          content: `${this.illustDetail.caption} - pixivic`,
-        },
-        {
-          hid: 'description',
-          property: 'description',
           content: `${this.illustDetail.caption} - pixivic`,
         },
         {

@@ -16,9 +16,7 @@
       >
         <img :title="item.title" :alt="item.caption" :src="item.src" />
         <span>{{ item.artistPreView.name }}</span>
-        <nuxt-link :to="{ path: `illusts/${item.id}` }"
-          >{{ item.title }}
-        </nuxt-link>
+        <a :href="`/illusts/${item.id}`">{{ item.title }}</a>
         <div class="caption">{{ item.caption }}</div>
         <ul class="tags">
           <li v-for="e in item.tags" :key="e.id">{{ e.name }}</li>
@@ -66,29 +64,7 @@ export default {
   head() {
     return {
       title: 'pixivic',
-      meta: [
-        {
-          hid: 'og:site_name',
-          property: 'og:site_name',
-          content: 'pixivic',
-        },
-        {
-          hid: 'og:url',
-          property: 'og:url',
-          content: 'https://pixivic.com/',
-        },
-        {
-          hid: 'og:description',
-          property: 'og:description',
-          content: '提供Pixiv插画排行榜的浏览与下载以及热门排序的高级会员搜索',
-        },
-        {
-          hid: 'og:title',
-          property: 'og:title',
-          content: '插画交流网站 [pixivic]',
-        },
-        { property: 'og:type', content: 'website' },
-      ],
+      meta: [],
     }
   },
 }
