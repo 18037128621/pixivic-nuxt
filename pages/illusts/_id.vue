@@ -29,7 +29,7 @@
             :key="item.id"
             :title="item.translatedName"
           >
-            {{ item.name }}
+            {{ item.name + item.translatedName }}
           </li>
         </ul>
       </div>
@@ -120,7 +120,7 @@ export default {
     },
     computeKeywords() {
       return this.illustDetail.tags.reduce(
-        (res, cur) => (res += cur.name + ' '),
+        (res, cur) => (res += (cur.name + '' + cur.translatedName) + ' '),
         ''
       )
     },
