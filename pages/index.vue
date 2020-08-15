@@ -4,10 +4,11 @@
  * @lastTime: 2020-06-29 00:16:02
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\pages\index.vue
- * @message: 
+ * @message:
 -->
 <template>
   <div class="container">
+    <h1>pixivic 插画网站</h1>
     <ul class="picture-grid">
       <li
         v-for="(item, index) in pictureList"
@@ -31,7 +32,7 @@ import dayjs from 'dayjs'
 import { replaceSmallImg } from '@/util'
 export default {
   watchQuery: true,
-  async asyncData({ app, params }) {
+  async asyncData({ app }) {
     const param = {
       page: 1,
       pageSize: 200,
@@ -69,7 +70,18 @@ export default {
   head() {
     return {
       title: 'pixivic',
-      meta: [],
+      meta: [
+        {
+          hid: 'title',
+          name: 'title',
+          content: 'pixivic',
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: '提供Pixiv插画排行榜的浏览与下载以及热门排序的高级会员搜索',
+        },
+      ],
     }
   },
 }
@@ -94,7 +106,7 @@ export default {
   -webkit-box-pack: center;
   justify-content: center;
   margin: 20px;
-  padding: 0px;
+  padding: 0;
   .picture-item {
     overflow: hidden;
     img {
@@ -102,7 +114,6 @@ export default {
       width: 200px;
       overflow: hidden;
       text-overflow: ellipsis;
-      overflow: hidden;
       white-space: nowrap;
     }
     .caption {

@@ -27,35 +27,22 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: process.env.npm_package_description || '',
-      },
-      {
-        hid: 'keywords',
-        name: 'keywords',
-        content: process.env.npm_package_description || '222',
-      },
+      { 'http-equiv': 'content-language', content: `zh-cn` },
       { property: 'og:type', content: 'website' },
       {
-        hid: 'og:site_name',
         property: 'og:site_name',
         content: 'pixivic',
       },
       {
-        hid: 'og:url',
         property: 'og:url',
         content: 'https://pixivic.com/',
       },
 
       {
-        hid: 'og:description',
         property: 'og:description',
         content: '提供Pixiv插画排行榜的浏览与下载以及热门排序的高级会员搜索',
       },
       {
-        hid: 'og:title',
         property: 'og:title',
         content: '插画交流网站 [pixivic]',
       },
@@ -65,15 +52,12 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['element-ui/lib/theme-chalk/index.css'],
+  // css: ['element-ui/lib/theme-chalk/index.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [
-    '@/plugins/element-ui',
-    { src: '@/plugins/api/index.js', ssr: true },
-  ],
+  plugins: [{ src: '@/plugins/api/index.js', ssr: true }],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -120,7 +104,5 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {
-    transpile: [/^element-ui/],
-  },
+  build: {},
 }

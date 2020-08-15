@@ -4,23 +4,23 @@
  * @lastTime: 2020-06-29 00:28:15
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\pages\illusts\_id.vue
- * @message: 
+ * @message:
 -->
 <template>
   <div>
+    <h1>{{ illustDetail.title }}</h1>
     <main v-if="illustDetail">
       <figure class="figure">
         <img
           :title="illustDetail.title"
           :alt="illustDetail.caption"
           :src="illustDetail.src"
-          fit="contain"
         />
       </figure>
       <div class="card">
-        <h1>{{ illustDetail.title }}</h1>
-        <div class="disc" />
-        {{ illustDetail.caption }}
+        <div class="disc">
+          {{ illustDetail.caption }}
+        </div>
       </div>
       <div class="tags">
         <ul>
@@ -29,7 +29,8 @@
             :key="item.id"
             :title="item.translatedName"
           >
-            {{ item.name + item.translatedName }}
+            <span>{{ item.translatedName }}</span>
+            <span>{{ item.name }}</span>
           </li>
         </ul>
       </div>
@@ -61,7 +62,10 @@
             <a :href="`/illusts/${item.id}`">{{ item.title }}</a>
             <div class="caption">{{ item.caption }}</div>
             <ul class="tags">
-              <li v-for="e in item.tags" :key="e.id + 2">{{ e.name }}</li>
+              <li v-for="e in item.tags" :key="e.id + 2">
+                <span>{{ e.name }}</span
+                ><span>{{ e.translatedName ? e.translatedName : '' }}</span>
+              </li>
             </ul>
           </li>
         </ul>
@@ -120,7 +124,7 @@ export default {
     },
     computeKeywords() {
       return this.illustDetail.tags.reduce(
-        (res, cur) => (res += (cur.name + '' + cur.translatedName) + ' '),
+        (res, cur) => (res += cur.name + '' + cur.translatedName + ' '),
         ''
       )
     },
@@ -191,19 +195,19 @@ export default {
     font-size: 20px;
     line-height: 24px;
     font-weight: bold;
-    margin: 0px 0px 8px;
+    margin: 0 0 8px;
   }
   .disc {
     color: rgb(92, 92, 92);
     line-height: 1.33;
-    margin: 0px;
+    margin: 0;
     overflow: hidden;
   }
   .tags {
     display: flex;
     color: rgb(61, 118, 153);
     line-height: 18px;
-    margin: 16px 0px;
+    margin: 16px 0;
     ul {
       margin: 0 -6px 0 0;
       list-style: none;
@@ -222,10 +226,10 @@ export default {
     align-items: center;
     margin: 16px -4px;
     list-style: none;
-    padding: 0px;
+    padding: 0;
     li {
       flex: 0 0 auto;
-      margin: 0px 8px;
+      margin: 0 8px;
       display: list-item;
       text-align: -webkit-match-parent;
       font-size: 12px;
