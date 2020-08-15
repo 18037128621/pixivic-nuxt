@@ -4,25 +4,13 @@
  * @lastTime: 2020-06-27 14:55:31
  * @LastAuthor: Dongzy
  * @FilePath: \pixivic-nuxt\layouts\default.vue
- * @message: 
+ * @message:
 -->
 <template>
-  <div>
-    <HeaderBar />
-    <main ref="container" class="content-container">
-      <Nuxt />
-    </main>
-  </div>
+  <main ref="container" class="content-container">
+    <Nuxt />
+  </main>
 </template>
-<script>
-import HeaderBar from '@/components/Home/HeaderBar'
-
-export default {
-  components: {
-    HeaderBar,
-  },
-}
-</script>
 <style lang="less">
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',

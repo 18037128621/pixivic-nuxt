@@ -9,7 +9,7 @@
 <template>
   <div>
     <h1>{{ illustDetail.title }}</h1>
-    <main v-if="illustDetail">
+    <div v-if="illustDetail">
       <figure class="figure">
         <img
           :title="illustDetail.title"
@@ -70,7 +70,7 @@
           </li>
         </ul>
       </section>
-    </main>
+    </div>
   </div>
 </template>
 
@@ -147,11 +147,6 @@ export default {
           hid: 'og:url',
           property: 'og:url',
           content: `https://pixivic.com/illusts/${this.illustDetail.id}`,
-        },
-        {
-          hid: 'og:id',
-          property: 'og:id',
-          content: `${this.illustDetail.id}`,
         },
         {
           hid: 'og:artist',
